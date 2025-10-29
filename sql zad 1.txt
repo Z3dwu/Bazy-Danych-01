@@ -1,0 +1,32 @@
+ZAD1
+
+    CREATE TABLE pracownik (id_pracownika int AUTO_INCREMENT, imie varchar(40) NOT NULL, nazwisko varchar(60) NOT NULL, data_urodzenia DATE NOT NULL, PRIMARY KEY (id_pracownika));
+    INSERT INTO pracownik (imie, nazwisko, data_urodzenia) VALUES ("John", "Doe", "1980-10-22");
+    INSERT INTO pracownik (imie, nazwisko, data_urodzenia) VALUES ("Zyran", "Doll", "1991-02-02");
+    INSERT INTO pracownik (imie, nazwisko, data_urodzenia) VALUES ("Artur", "Morgan", "1983-07-12");
+    UPDATE pracownik SET data_urodzenia = "1863-12-01" WHERE id_pracownika = 3;
+
+
+ZAD2
+
+    CREATE TABLE zadanie (id_zadania INT PRIMARY KEY AUTO_INCREMENT, nazwa_zadania VARCHAR(150) NOT NULL, priorytet ENUM('normalny','wysoki','niski'), opis LONGTEXT, id_pracownika INT, FOREIGN KEY (pracownik) REFERENCES pracownik(id_pracownika));
+    ALTER TABLE zadanie MODIFY COLUMN priorytet ENUM('normalny','wysoki','niski') DEFAULT 'normalny';
+    INSERT INTO zadanie (nazwa_zadania, priorytet, opis, pracownik) VALUES ('Tajne', 'wysoki', 'Tajne', 1);
+    INSERT INTO zadanie (nazwa_zadania, opis, pracownik) VALUES ('Zadanie 2', 'Opis 2', 2);
+    INSERT INTO zadanie (nazwa_zadania, priorytet, pracownik) VALUES ('Zadanie 3', 'niski', 3);
+
+
+ZAD3
+
+    CREATE TABLE projekt (id_projektu INT PRIMARY KEY AUTO_INCREMENT, nazwa_projektu VARCHAR(150), data_rozpoczecia DATE, data_zakonczenia DATE);
+    ALTER TABLE projekt ADD menadzer_projektu INT;
+    ALTER TABLE projekt ADD FOREIGN KEY (menadzer_projektu) REFERENCES pracownik(id_pracownika);
+    INSERT INTO projekt (nazwa_projektu, data_rozpoczecia, data_zakonczenia, menadzer_projektu) VALUES ('Projekt1','2000-01-01','2025-10-22',3);
+    INSERT INTO projekt (nazwa_projektu, data_rozpoczecia, data_zakonczenia, menadzer_projektu) VALUES ('Projekt2','2025-08-01',1);
+
+
+
+
+    ALTER TABLE zadanie ADD projekt INT;
+    ALTER TABLE zadanie ADD FOREIGN KEY (projekt) REFERENCES projekt(id_projektu) ON DELETE CASCADE;
+    UPDATE zadanie SET projekt = ... ;
