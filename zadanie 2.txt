@@ -23,10 +23,34 @@ ZAD3
     ALTER TABLE projekt ADD FOREIGN KEY (menadzer_projektu) REFERENCES pracownik(id_pracownika);
     INSERT INTO projekt (nazwa_projektu, data_rozpoczecia, data_zakonczenia, menadzer_projektu) VALUES ('Projekt1','2000-01-01','2025-10-22',3);
     INSERT INTO projekt (nazwa_projektu, data_rozpoczecia, data_zakonczenia, menadzer_projektu) VALUES ('Projekt2','2025-08-01',1);
-
-
-
-
     ALTER TABLE zadanie ADD projekt INT;
     ALTER TABLE zadanie ADD FOREIGN KEY (projekt) REFERENCES projekt(id_projektu) ON DELETE CASCADE;
-    UPDATE zadanie SET projekt = ... ;
+    UPDATE zadanie SET projekt = 1 WHERE id_zadania = 1;
+    UPDATE zadanie SET projekt = 3 WHERE id_zadania = 2;
+    UPDATE zadanie SET projekt = 2 WHERE id_zadania = 3;
+
+
+ZAD4
+
+    CREATE TABLE sprint (id_sprintu INT PRIMARY KEY AUTO_INCREMENT, numer_sprintu INT UNSIGNED, data_rozpoczecia DATE, data_zakonczenia DATE);
+    ALTER TABLE zadanie ADD sprint INT DEFAULT NULL;
+    ALTER TABLE zadanie ADD FOREIGN KEY (sprint) REFERENCES sprint(id_sprintu);
+    INSERT INTO sprint (numer_sprintu, data_rozpoczecia, data_zakonczenia) VALUES (10, '2025-09-29', '2025-10-29');
+    UPDATE zadanie SET sprint = 10 WHERE id_zadania = 2;
+    UPDATE zadanie SET sprint = 10 WHERE id_zadania = 3;
+
+
+ZAD5
+
+    CREATE TABLE status (id_statusu INT PRIMARY KEY AUTO_INCREMENT, nazwa_statusu VARCHAR(20));
+    INSERT INTO status (nazwa_statusu) VALUES ('Status 1');
+    INSERT INTO status (nazwa_statusu) VALUES ('Status 2');
+    INSERT INTO status (nazwa_statusu) VALUES ('Status 3');
+    CREATE TABLE zadanie_has_status (id_zdarzenia INT PRIMARY KEY AUTO_INCREMENT, id_zadania INT, id_statusu INT, data_zdarzenia TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
+    ALTER TABLE zadanie_has_status ADD FOREIGN KEY (id_statusu) REFERENCES status(id_statusu) ON DELETE CASCADE;
+    INSERT INTO zadanie_has_status (id_zadania, id_statusu) VALUES (1, 1);
+    INSERT INTO zadanie_has_status (id_zadania, id_statusu) VALUES (2, 2);
+    INSERT INTO zadanie_has_status (id_zadania, id_statusu) VALUES (3, 3);
+    DELETE FROM projekt WHERE id_projektu = 3;
+    ALTER TABLE zadanie DROP CONSTRAINT zadanie_ibfk_3;
+    DROP TABLE sprint;
